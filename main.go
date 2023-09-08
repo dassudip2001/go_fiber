@@ -10,12 +10,16 @@ func welcome(c *fiber.Ctx) error {
 }
 
 func main() {
+
 	// initialized the database connection
 	database.ConnectDb()
+
 	app := fiber.New()
 
 	app.Get("/", welcome)
 
+	// load the static files
+	app.Static("/", "./public")
+
 	app.Listen(":3000")
 }
-
