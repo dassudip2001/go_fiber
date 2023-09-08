@@ -2,10 +2,9 @@ package database
 
 import (
 	"log"
-	"os"
 
 	"github.com/dassudip2001/webapp/models"
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
@@ -17,11 +16,13 @@ type DbInstance struct {
 var Database DbInstance
 
 func ConnectDb() {
-	db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
+	log.Println("Connecting to database...")
+	dsn := "admin:password@tcp(127.0.0.1:3306)/godb?charset=utf8mb4&parseTime=True&loc=Local"
+    db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatal("Could not connect to the database\n", err.Error())
-		panic("Could not connect to the database")
-		os.Exit(2)
+		log.Fatal("Error connecting to database: ", err)
+	}else{
+		log.Println("Database connection successfully opened")
 	}
 
 	log.Println("Database connection successfully opened")
