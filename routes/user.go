@@ -55,6 +55,10 @@ func CreateUser(c *fiber.Ctx) error {
 // The function retrieves all users from the database and returns them as a JSON response.
 func GetUsers(c *fiber.Ctx) error {
 	var users []models.User
+	if err := c.BodyParser(&users); err != nil {
+		
+		return c.Status(400).JSON(err.Error())
+	}
 	database.Database.Db.Find(&users)
 	return c.JSON(users)
 }
